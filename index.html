@@ -13,9 +13,9 @@
       <li><a href="https://constraint.systems">Constraint Systems</a> - experiments in creative constraints</li> 
       <li><a href="http://feed.grantcuster.com">Feed</a> - work and inspiration in progress</li> 
       <li><a href="https://writing.grantcuster.com">Writing</a></li> 
+      <li><a href="https://scrawl.grantcuster.com">Scrawl</a> - notes, quickly written.</li> 
      <li><a href="https://experiments.fastforwardlabs.com">Cloudera Fast Forward - AI Experiments</a></li> 
      <li><a href="https://blog.fastforwardlabs.com">Cloudera Fast Forward Blog</a></li> 
-     <li><a href="https://scrawl.grantcuster.com">Scrawl</a> - notes, quickly written.</li> 
      <li><a href="https://observablehq.com/@grantcuster">Observable notebooks</a></li> 
      <li><a href="https://resume.grantcuster.com">Résumé</a></li> 
     </ol>
@@ -24,6 +24,34 @@
       <li><a href="https://twitter.com/grantcuster">Twitter@grantcuster</a></li> 
       <li><a href="https://vis.social/@grantcuster">Mastodon@grantcuster</a></li> 
     </ul>
+    <div>
+      <h2>Activity</h2>
+      <ul id='activity-holder'></ul>
+    </div>
   </body>
+  <script>
+    console.log('hi')  
+    let $activity_holder = document.getElementById('activity-holder')
+    fetch('https://scrawl.grantcuster.com/feed.json').then(r => r.json()).then(r => {
+      let items = r.items
+      for (let i = 0; i < items.length; i++) {
+        let item = items[i]
+        let $i = document.createElement('div')      
+        $i.style.marginBottom = '0.5em'
+        let date = item.date.split('T')[0]
+        let time_string = (new Date(item.date)).toLocaleTimeString('en-US')
+        let period = time_string.split(' ')[1]
+        let hour = time_string.split(':')[0]
+        let minute = time_string.split(':')[1]
+        let $time = document.createElement('div')
+        $time.innerHTML = date + ' ' + period + ' ' + hour.toString().padStart(2, '0')+ ':' + minute + ' &middot; <a href="https://scrawl.grantcuster.com">scrawl</a>'
+        let $content = document.createElement('div')
+        $content.innerHTML = '<a href="' + item.url + '">' +  item.id + '</a>' + ' - ' + item.content_text.replace(/\n/g, ' ').slice(0,160)+'...'
+        $i.appendChild($time)
+        $i.appendChild($content)
+        $activity_holder.appendChild($i)
+      }
+    })
+  </script>
 </html>
  
