@@ -1,161 +1,171 @@
+
+
+
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width" />
-    <title>Index - Grant Custer</title>
-    <style type="text/css">html { font-family: sans-serif; }</style>
-  </head>
-  <body>
-   <div style='display: flex; flex-wrap: wrap; width: 100%; max-width: 1200px; margin: 0 auto; justify-content: center;'>
-    <div style='width: 100%; max-width: 600px'>
-
-      <h1>Index - Grant Custer</h1>
-      <div><img src='/sloth.png' width='64' /></div>
-      <h2>About</h2>
-      <p>Designer-Programmer. Interested in experimental creative interfaces. Going out on a limb.</p>
-      <h2>Links</h2>
-      <ol>
-        <li><a href="https://constraint.systems">Constraint Systems</a> - experiments in creative constraints</li> 
-        <li><a href="http://feed.grantcuster.com">Feed</a> - work and inspiration in progress</li> 
-        <li><a href="https://writing.grantcuster.com">Writing</a></li> 
-        <li><a href="https://scrawl.grantcuster.com">Scrawl</a> - notes, quickly written.</li> 
-       <li><a href="https://experiments.fastforwardlabs.com">Cloudera Fast Forward - AI Experiments</a></li> 
-       <li><a href="https://blog.fastforwardlabs.com">Cloudera Fast Forward Blog</a></li> 
-       <li><a href="https://observablehq.com/@grantcuster">Observable notebooks</a></li> 
-       <li><a href="https://resume.grantcuster.com">Résumé</a></li> 
-      </ol>
-      <h2>Social</h2>
-      <ul>
-        <li><a href="https://twitter.com/grantcuster">Twitter@grantcuster</a></li> 
-        <li><a href="https://vis.social/@grantcuster">Mastodon@grantcuster</a></li> 
-      </ul>
+   <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width" />
+      <title>Index - Grant Custer</title>
+      <meta property="description" content="About, Links, Social, Activity." />
+      <meta property="og:title" content="Index - Grant Custer" />
+      <meta property="og:description" content="About, Links, Social, Activity." />
+      <meta property="og:url" content="http://index.grantcuster.com" />
+      <meta property="og:url" content="http://index.grantcuster.com" />
+      <meta property="og:image" content="http://index.grantcuster.com/sloth.png" />
+      <meta name="twitter:card" content="summary_large_image" />
+      <style type="text/css">html { font-family: sans-serif; }</style>
+   </head>
+   <body>
+      <div style='display: flex; flex-wrap: wrap; width: 100%; max-width: 1200px; margin: 0 auto; justify-content: center;'>
+         <div style='width: 100%; max-width: 600px'>
+            <h1>Index - Grant Custer</h1>
+            <div><img src='/sloth.png' width='64' /></div>
+            <h2>About</h2>
+            <p>Designer-Programmer. Interested in experimental creative interfaces. Going out on a limb.</p>
+            <h2>Links</h2>
+            <ol>
+               <li><a href="https://constraint.systems">Constraint Systems</a> - experiments in creative constraints</li>
+               <li><a href="http://feed.grantcuster.com">Feed</a> - work and inspiration in progress</li>
+               <li><a href="https://writing.grantcuster.com">Writing</a></li>
+               <li><a href="https://scrawl.grantcuster.com">Scrawl</a> - notes, quickly written.</li>
+               <li><a href="https://experiments.fastforwardlabs.com">Cloudera Fast Forward - AI Experiments</a></li>
+               <li><a href="https://blog.fastforwardlabs.com">Cloudera Fast Forward Blog</a></li>
+               <li><a href="https://observablehq.com/@grantcuster">Observable notebooks</a></li>
+               <li><a href="https://resume.grantcuster.com">Résumé</a></li>
+            </ol>
+            <h2>Social</h2>
+            <ul>
+               <li><a href="https://twitter.com/grantcuster">Twitter@grantcuster</a></li>
+               <li><a href="https://vis.social/@grantcuster">Mastodon@grantcuster</a></li>
+            </ul>
+         </div>
+         <div style='width: 100%; max-width: 600px'>
+            <h2>Activity</h2>
+            <ul id='activity-holder'></ul>
+         </div>
       </div>
-      <div style='width: 100%; max-width: 600px'>
-      <h2>Activity</h2>
-      <ul id='activity-holder'></ul>
-    </div>
-    </div>
-  </body>
-  <script>
-    function formatDate(json_date) {
-      let date = json_date.split('T')[0]
-      let time_string = (new Date(json_date)).toLocaleTimeString('en-US')
-      let period = time_string.split(' ')[1]
-      let hour = time_string.split(':')[0]
-      let minute = time_string.split(':')[1]
-      return date + ' ' + period + ' ' + hour.toString().padStart(2, '0')+ ':' + minute
-    }
-
-    function formatScrawlPosts(item) {
-      let $li = document.createElement('li')      
-      let formatted_date = formatDate(item.date_published)
-      let $heading = document.createElement('div')
-      $heading.innerHTML = '<a href="https://scrawl.grantcuster.com">scrawl</a> &middot; ' + formatted_date
-      $heading.style.border = 'solid 1px white'
-      $heading.style.borderBottom = 'solid 1px black'
-      $heading.style.marginTop = '-1px'
-      $heading.style.marginLeft = '-1px'
-      $heading.style.marginRight = '-1px'
-
-      let $content = document.createElement('div')
-      $content.innerHTML = '<a href="' + item.url + '">' +  item.id + '</a>' + ' - ' + item.content_text.replace(/\n/g, ' ').slice(0,160)+'...' + ' <a href="' + item.url + '">read post</a>'
-      $li.appendChild($heading)
-      $li.appendChild($content)
-      return [item.date_published, $li]
-    }
-
-    function formatWritingPosts(item) {
-      let $li = document.createElement('li')      
-      let formatted_date = formatDate(item.date_published)
-      let $heading = document.createElement('div')
-      $heading.innerHTML = '<a href="https://writing.grantcuster.com">Writing</a> &middot; ' + formatted_date 
-      $heading.style.border = 'solid 1px white'
-      $heading.style.borderBottom = 'solid 1px black'
-      $heading.style.marginTop = '-1px'
-      $heading.style.marginLeft = '-1px'
-      $heading.style.marginRight = '-1px'
-
-     let $content = document.createElement('div')
-      $content.innerHTML = '<a href="' + item.url + '">' +  item.title + '</a>' + ' - ' + item.description
-      $li.appendChild($heading)
-      $li.appendChild($content)
-       return [item.date_published, $li]
-    }
-
-    function formatFeedPosts(item) {
-      console.log(item)
-      let $li = document.createElement('li')      
-      let date = new Date(item.posted).toJSON()
-      let formatted_date = formatDate(date)
-
-      let $heading = document.createElement('div')
-      $heading.innerHTML = '<a href="https://feed.grantcuster.com">Feed</a> &middot '+ formatted_date
-      $heading.style.border = 'solid 1px white'
-      $heading.style.borderBottom = 'solid 1px black'
-      $heading.style.marginTop = '-1px'
-      $heading.style.marginLeft = '-1px'
-      $heading.style.marginRight = '-1px'
+   </body>
+   <script>
+      function formatDate(json_date) {
+        let date = json_date.split('T')[0]
+        let time_string = (new Date(json_date)).toLocaleTimeString('en-US')
+        let period = time_string.split(' ')[1]
+        let hour = time_string.split(':')[0]
+        let minute = time_string.split(':')[1]
+        return date + ' ' + period + ' ' + hour.toString().padStart(2, '0')+ ':' + minute
+      }
       
-      let slug_date = (new Date(item.posted))
-        .toISOString()
-        .replace(/-/g, '')
-        .replace(/:/g, '')
-        .replace(/\./g, '')
-      let href = 'http://feed.grantcuster.com/post/' + slug_date 
-      let $title = document.createElement('div')
-      $title.innerHTML = item.type.charAt(0).toUpperCase() + item.type.slice(1) + ' ' + '<a href="' + href + '">' + (new Date(item.posted)).toLocaleDateString() + '</a>'  
-
-      let $img_link = document.createElement('a')
-      $img_link.href = href
-      $img_link.style.display = 'block'
-      let $img = document.createElement('img')
-      $img.src = 'http://feed.grantcuster.com' +item.img
-      $img.style.maxWidth = '100%'
-      $img.style.maxHeight = '6em'
-      $img.style.marginTop = '0.25em'
-      $img_link.appendChild($img)
-
-      let $content = document.createElement('div')
-      $content.innerHTML = item.text
-
-      $li.appendChild($heading)
-      $li.appendChild($title)
-      $li.appendChild($img_link)
-      $li.appendChild($content)
-      if (item.src) {
-        let $src = document.createElement('div')
-        $src.innerHTML = 'from <a href="' + item.src + '">' + item.src + '</a>'
-        $li.appendChild($src)
+      function formatScrawlPosts(item) {
+        let $li = document.createElement('li')      
+        let formatted_date = formatDate(item.date_published)
+        let $heading = document.createElement('div')
+        $heading.innerHTML = '<a href="https://scrawl.grantcuster.com">scrawl</a> &middot; ' + formatted_date
+        $heading.style.border = 'solid 1px white'
+        $heading.style.borderBottom = 'solid 1px black'
+        $heading.style.marginTop = '-1px'
+        $heading.style.marginLeft = '-1px'
+        $heading.style.marginRight = '-1px'
+        let $content = document.createElement('div')
+        $content.innerHTML = '<a href="' + item.url + '">' +  item.id + '</a>' + ' - ' + item.content_text.replace(/\n/g, ' ').slice(0,160)+'...' + ' <a href="' + item.url + '">read post</a>'
+        $li.appendChild($heading)
+        $li.appendChild($content)
+        return [item.date_published, $li]
       }
-      return [date, $li]
-    }
-
-    let $activity = document.getElementById('activity-holder')
-    let urls = ['https://scrawl.grantcuster.com/feed.json', 'https://writing.grantcuster.com/feed.json', 'http://feed.grantcuster.com/api/feed_posts']
-    let formatters = [formatScrawlPosts, formatWritingPosts, formatFeedPosts]
-    let promises = urls.map(url => fetch(url).then(r => r.json()))
-    Promise.all(promises).then(rs => {
-      let flat_items = []
-      for (let r=0; r < rs.length; r++) {
-        let formatter = formatters[r]
-        let items
-        if (r === 2) {
-          items = rs[r].slice(0,40)
-        } else {
-        items = rs[r].items
+      
+      function formatWritingPosts(item) {
+        let $li = document.createElement('li')      
+        let formatted_date = formatDate(item.date_published)
+        let $heading = document.createElement('div')
+        $heading.innerHTML = '<a href="https://writing.grantcuster.com">Writing</a> &middot; ' + formatted_date 
+        $heading.style.border = 'solid 1px white'
+        $heading.style.borderBottom = 'solid 1px black'
+        $heading.style.marginTop = '-1px'
+        $heading.style.marginLeft = '-1px'
+        $heading.style.marginRight = '-1px'
+      
+       let $content = document.createElement('div')
+        $content.innerHTML = '<a href="' + item.url + '">' +  item.title + '</a>' + ' - ' + item.description
+        $li.appendChild($heading)
+        $li.appendChild($content)
+         return [item.date_published, $li]
+      }
+      
+      function formatFeedPosts(item) {
+        console.log(item)
+        let $li = document.createElement('li')      
+        let date = new Date(item.posted).toJSON()
+        let formatted_date = formatDate(date)
+      
+        let $heading = document.createElement('div')
+        $heading.innerHTML = '<a href="https://feed.grantcuster.com">Feed</a> &middot '+ formatted_date
+        $heading.style.border = 'solid 1px white'
+        $heading.style.borderBottom = 'solid 1px black'
+        $heading.style.marginTop = '-1px'
+        $heading.style.marginLeft = '-1px'
+        $heading.style.marginRight = '-1px'
+        
+        let slug_date = (new Date(item.posted))
+          .toISOString()
+          .replace(/-/g, '')
+          .replace(/:/g, '')
+          .replace(/\./g, '')
+        let href = 'http://feed.grantcuster.com/post/' + slug_date 
+        let $title = document.createElement('div')
+        $title.innerHTML = item.type.charAt(0).toUpperCase() + item.type.slice(1) + ' ' + '<a href="' + href + '">' + (new Date(item.posted)).toLocaleDateString() + '</a>'  
+      
+        let $img_link = document.createElement('a')
+        $img_link.href = href
+        $img_link.style.display = 'block'
+        let $img = document.createElement('img')
+        $img.src = 'http://feed.grantcuster.com' +item.img
+        $img.style.maxWidth = '100%'
+        $img.style.maxHeight = '6em'
+        $img.style.marginTop = '0.25em'
+        $img_link.appendChild($img)
+      
+        let $content = document.createElement('div')
+        $content.innerHTML = item.text
+      
+        $li.appendChild($heading)
+        $li.appendChild($title)
+        $li.appendChild($img_link)
+        $li.appendChild($content)
+        if (item.src) {
+          let $src = document.createElement('div')
+          $src.innerHTML = 'from <a href="' + item.src + '">' + item.src + '</a>'
+          $li.appendChild($src)
         }
-        for (let i = 0; i< items.length; i++) {
-          flat_items.push(formatter(items[i]))
+        return [date, $li]
+      }
+      
+      let $activity = document.getElementById('activity-holder')
+      let urls = ['https://scrawl.grantcuster.com/feed.json', 'https://writing.grantcuster.com/feed.json', 'http://feed.grantcuster.com/api/feed_posts']
+      let formatters = [formatScrawlPosts, formatWritingPosts, formatFeedPosts]
+      let promises = urls.map(url => fetch(url).then(r => r.json()))
+      Promise.all(promises).then(rs => {
+        let flat_items = []
+        for (let r=0; r < rs.length; r++) {
+          let formatter = formatters[r]
+          let items
+          if (r === 2) {
+            items = rs[r].slice(0,40)
+          } else {
+          items = rs[r].items
+          }
+          for (let i = 0; i< items.length; i++) {
+            flat_items.push(formatter(items[i]))
+          }
         }
-      }
-      flat_items.sort((a, b) =>  new Date(b[0]) -new Date(a[0]));
-      for (let i =0; i<flat_items.length; i++) {
-        let $node = flat_items[i][1]
-        $node.style.marginBottom = '1em'
-        $node.style.border = 'solid 1px black'
-        $activity.appendChild($node)
-      }
-    })
- </script>
+        flat_items.sort((a, b) =>  new Date(b[0]) -new Date(a[0]));
+        for (let i =0; i<flat_items.length; i++) {
+          let $node = flat_items[i][1]
+          $node.style.marginBottom = '1em'
+          $node.style.border = 'solid 1px black'
+          $activity.appendChild($node)
+        }
+      })
+   </script>
 </html>
+
+
