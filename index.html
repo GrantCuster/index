@@ -59,7 +59,7 @@
                <li><a href="https://constraint.systems">Constraint Systems</a> - experiments in creative constraints</li>
                <li><a href="http://feed.grantcuster.com">Feed</a> - work and inspiration in progress</li>
                <li><a href="https://writing.grantcuster.com">Writing</a></li>
-               <li><a href="https://scrawl.grantcuster.com">Scrawl</a> - notes, quickly written.</li>
+               <li><a href="https://scrawl.grantcuster.com">scrawl</a> - notes, quickly written.</li>
                <li><a href="https://experiments.fastforwardlabs.com">Cloudera Fast Forward - AI Experiments</a></li>
                <li><a href="https://blog.fastforwardlabs.com">Cloudera Fast Forward Blog</a></li>
                <li><a href="https://observablehq.com/@grantcuster">Observable notebooks</a></li>
@@ -92,7 +92,7 @@
         let formatted_date = formatDate(item.date_published)
         let $heading = document.createElement('div')
         $heading.style.marginLeft = '-2ch'
-        $heading.innerHTML = '<a href="https://scrawl.grantcuster.com">scrawl</a> &middot; ' + formatted_date
+        $heading.innerHTML = '<a href="https://scrawl.grantcuster.com">scrawl</a> at ' + formatted_date
         let $content = document.createElement('div')
         $content.innerHTML = '<a href="' + item.url + '">' +  item.id + '</a>' + ' - ' + item.content_text.replace(/\n/g, ' ').slice(0,160)+'...' + ' <a href="' + item.url + '">read post</a>'
         $li.appendChild($heading)
@@ -105,7 +105,7 @@
         let formatted_date = formatDate(item.date_published)
         let $heading = document.createElement('div')
         $heading.style.marginLeft = '-2ch'
-        $heading.innerHTML = '<a href="https://writing.grantcuster.com">Writing</a> &middot; ' + formatted_date 
+        $heading.innerHTML = '<a href="https://writing.grantcuster.com">Writing</a> at ' + formatted_date 
       
        let $content = document.createElement('div')
         $content.innerHTML = '<a href="' + item.url + '">' +  item.title + '</a>' + ' - ' + item.description
@@ -120,7 +120,7 @@
         let formatted_date = formatDate(date)
         let $heading = document.createElement('div')
         $heading.style.marginLeft = '-2ch'
-        $heading.innerHTML = '<a href="https://feed.grantcuster.com">Feed</a> &middot '+ formatted_date
+        $heading.innerHTML = '<a href="https://feed.grantcuster.com">Feed</a> at '+ formatted_date
         
         let slug_date = (new Date(item.posted))
           .toISOString()
