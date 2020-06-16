@@ -279,7 +279,7 @@
     let urls = [
       'https://scrawl.grantcuster.com/feed.json',
       'https://writing.grantcuster.com/feed.json',
-      'http://feed.grantcuster.com/api/feed_posts',
+      'https://feed.grantcuster.com/api/feed_posts',
     ]
     let formatters = [formatScrawlPosts, formatWritingPosts, formatFeedPosts]
     let promises = urls.map(url => fetch(url).then(r => r.json()))
