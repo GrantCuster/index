@@ -37,6 +37,9 @@ body {
   padding-left: 12px;
   padding-right: 12px;
 }
+.block {
+  display: block;
+}
 
 a {
   color: inherit;
